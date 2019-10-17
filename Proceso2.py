@@ -7,11 +7,11 @@ import math as mt
 colors = ('b' , 'g' ,'r')
 
 #Implementation
-src = cv2.imread('images/imagen2.jpg')
+src = cv2.imread('images/imagenpdi1.jpg')
 cv2.imshow('Imagen Inicial',src)
-cv2.waitKey(0)
+# cv2.waitKey(0)
 
-# hist = []
+hist = []
 # for i in range(0,2,1):
 #     hist = [hist, cv2.calcHist([src],[i],None,[256],[0,256])]
 #     plt.figure()
@@ -34,6 +34,10 @@ plt.xlim([0, 256])
 plt.show()
 
 b, g, r = cv2.split(src)
+
+b = np.array(b,dtype = int)
+g = np.array(g,dtype = int)
+r = np.array(r,dtype = int)
 
 # for j in range(0,3,1):
 #     Cdf_acc = 0
@@ -92,15 +96,32 @@ for i in range(0,width,1):
         if Cdf1[b[i,j]]==1:
             b[i,j] = 255
         else:
-            b[i,j] = mt.sqrt(2*(50**2)*mt.log(1/(1-Cdf1[b[i,j]])))
+            b[i,j] = mt.sqrt(2*(70**2)*mt.log(1/(1-Cdf1[b[i,j]])))
+            if b[i,j] < 0:
+                b[i,j] = 0
+            elif b[i,j] > 255:
+                b[i,j] = 255
         if Cdf2[g[i,j]]==1:
             g[i,j] = 255
         else:
-            g[i,j] = mt.sqrt(2*(50**2)*mt.log(1/(1-Cdf2[g[i,j]])))
+            g[i,j] = mt.sqrt(2*(70**2)*mt.log(1/(1-Cdf2[g[i,j]])))
+            if g[i,j] < 0:
+                g[i,j] = 0
+            elif g[i,j] > 255:
+                g[i,j] = 255
         if Cdf3[r[i,j]]==1:
             r[i,j] = 255
         else:
-            r[i,j] = mt.sqrt(2*(50**2)*mt.log(1/(1-Cdf3[r[i,j]])))
+            r[i,j] = mt.sqrt(2*(70**2)*mt.log(1/(1-Cdf3[r[i,j]])))
+            if r[i,j] < 0:
+                r[i,j] = 0
+            elif r[i,j] > 255:
+                r[i,j] = 255
+
+
+b = np.array(b,dtype = np.uint8)
+g = np.array(g,dtype = np.uint8)
+r = np.array(r,dtype = np.uint8)
 
 image_final = cv2.merge((b,g,r))
 for i,col in enumerate(['b','g','r']):

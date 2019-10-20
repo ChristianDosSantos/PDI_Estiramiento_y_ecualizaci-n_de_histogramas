@@ -192,11 +192,6 @@ vc = np.array(vc,dtype = int)
 
 for i in range (0, width, 1):
     for j in range (0, height, 1):
-        hc[i,j] = ((hc[i,j] - ch)*(bi-ai)/(dh-ch)) + ai
-        if hc[i,j] > 255:
-            hc[i,j] = 255
-        elif hc[i,j] < 0:
-            hc[i,j] = 0
         sc[i,j] = ((sc[i,j] - cs)*(bi-ai)/(ds-cs)) + ai
         if sc[i,j] > 255:
             sc[i,j] = 255

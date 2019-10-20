@@ -1,42 +1,46 @@
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np 
+import matplotlib.image as mpimg
 
 # Constants section
-# cb = 72
-# db = 212
-# cg = 83
-# dg = 226
-# cr = 10
-# dr = 92
 bi = 255 
 ai = 0
 colors = ('b' , 'g' ,'r')
-# ch = 0
-# dh = 175
-# cs = 0
-# ds = 255
-# cv = 10
-# dv = 255
 pixPercent = 0.005
 
 # Inicio del Programa
 src = cv2.imread('images/imagenpdi1.jpg')
-cv2.imshow("prueba",src)
-# cv2.waitKey(0)
+
 hist1 = cv2.calcHist([src],[0],None,[256],[0,256])
-plt.figure()
-plt.plot(hist1, color = colors[0])
-plt.xlim([0, 256])
 hist2 = cv2.calcHist([src],[1],None,[256],[0,256])
-plt.figure()
-plt.plot(hist2, color = colors[1])
-plt.xlim([0, 256])
 hist3 = cv2.calcHist([src],[2],None,[256],[0,256])
-plt.figure()
+
+fig_size = plt.rcParams["figure.figsize"]
+fig_size[0] = 12
+fig_size[1] = 9
+
+plt.subplot(221)
+plt.imshow(src)
+plt.title('Imagen Original')
+plt.ylabel('Vertical pixels')
+plt.xlabel('Horizontal pixels')
+plt.subplot(222)
+plt.plot(hist1, color = colors[0])
+plt.title('Histograma Azul')
+plt.ylabel('Number of pixels')
+plt.xlabel('Intensity')
+plt.subplot(223)
+plt.plot(hist2, color = colors[1])
+plt.title('Histograma Verde')
+plt.ylabel('Number of pixels')
+plt.xlabel('Intensity')
+plt.subplot(224)
 plt.plot(hist3, color = colors[2])
-plt.xlim([0, 256])
-plt.show()
+plt.title('Histograma Rojo')
+plt.ylabel('Number of pixels')
+plt.xlabel('Intensity')
+plt.suptitle('Imagen inicial y sus histogramas', fontsize=16)
 
 b, g, r = cv2.split(src)
 b = np.array(b,dtype = int)
@@ -115,33 +119,60 @@ histb = cv2.calcHist([b], [0], None, [256], [0, 256])
 histg = cv2.calcHist([g], [0], None, [256], [0, 256])
 histr = cv2.calcHist([r], [0], None, [256], [0, 256])
 
-plt.figure()
-plt.plot(histb, color = colors[0])
-plt.figure()
-plt.plot(histg, color = colors[1])
-plt.figure()
-plt.plot(histr, color = colors[2])
-plt.show()
-
 image_proc = cv2.merge((b,g,r))
-cv2.imshow('Expansion del histograma BGR',image_proc)
-# cv2.waitKey(0)
+
+plt.figure()
+plt.subplot(221)
+plt.imshow(image_proc)
+plt.title('Imagen Procesada')
+plt.ylabel('Vertical pixels')
+plt.xlabel('Horizontal pixels')
+plt.subplot(222)
+plt.plot(histb, color = colors[0])
+plt.title('Histograma Azul')
+plt.ylabel('Number of pixels')
+plt.xlabel('Intensity')
+plt.subplot(223)
+plt.plot(histg, color = colors[1])
+plt.title('Histograma Verde')
+plt.ylabel('Number of pixels')
+plt.xlabel('Intensity')
+plt.subplot(224)
+plt.plot(histr, color = colors[2])
+plt.title('Histograma Rojo')
+plt.ylabel('Number of pixels')
+plt.xlabel('Intensity')
+plt.suptitle('Estiramiento de histogramas en el espacio RGB', fontsize=16)
+
 image_hsv = cv2.cvtColor(image_proc, cv2.COLOR_BGR2HSV)
 hc, sc, vc = cv2.split(image_hsv)
 
 hist1 = cv2.calcHist([image_hsv],[0],None,[256],[0,256])
-plt.figure()
-plt.plot(hist1, color = colors[0])
-plt.xlim([0, 256])
 hist2 = cv2.calcHist([image_hsv],[1],None,[256],[0,256])
-plt.figure()
-plt.plot(hist2, color = colors[1])
-plt.xlim([0, 256])
 hist3 = cv2.calcHist([image_hsv],[2],None,[256],[0,256])
+
 plt.figure()
+plt.subplot(221)
+plt.imshow(image_hsv)
+plt.title('Imagen Inicial en HSV')
+plt.ylabel('Vertical pixels')
+plt.xlabel('Horizontal pixels')
+plt.subplot(222)
+plt.plot(hist1, color = colors[0])
+plt.title('Histograma Hue')
+plt.ylabel('Number of pixels')
+plt.xlabel('Intensity')
+plt.subplot(223)
+plt.plot(hist2, color = colors[1])
+plt.title('Histograma Saturation')
+plt.ylabel('Number of pixels')
+plt.xlabel('Intensity')
+plt.subplot(224)
 plt.plot(hist3, color = colors[2])
-plt.xlim([0, 256])
-plt.show()
+plt.title('Histograma Value')
+plt.ylabel('Number of pixels')
+plt.xlabel('Intensity')
+plt.suptitle('Imagen en el espacio HSV', fontsize=16)
 
 pix_acch = 0
 pix_accs = 0
@@ -185,7 +216,6 @@ print(db)
 print(dg)
 print(dr)
 
-hc = np.array(hc,dtype = int)
 sc = np.array(sc,dtype = int)
 vc = np.array(vc,dtype = int)
 
@@ -203,22 +233,65 @@ for i in range (0, width, 1):
         elif vc[i,j] < 0:
             vc[i,j] = 0
 
-hc = np.array(hc,dtype = np.uint8)
 sc = np.array(sc,dtype = np.uint8)
 vc = np.array(vc,dtype = np.uint8)
 
 image_proc2 = cv2.merge((hc, sc, vc))
 
-for i,col in enumerate(['b','g','r']):
-    hist = cv2.calcHist([image_proc2],[i],None,[256],[0,256])
-    plt.figure()
-    plt.plot(hist, color = col)
-    plt.xlim([0, 256])
-plt.show()
+hist1 = cv2.calcHist([image_proc2],[0],None,[256],[0,256])
+hist2 = cv2.calcHist([image_proc2],[1],None,[256],[0,256])
+hist3 = cv2.calcHist([image_proc2],[2],None,[256],[0,256])
 
-cv2.imshow('Expansion del histograma HSV',image_proc2)
-# cv2.waitKey(0)
+plt.figure()
+plt.subplot(221)
+plt.imshow(image_proc2)
+plt.title('Imagen Procesada en HSV')
+plt.ylabel('Vertical pixels')
+plt.xlabel('Horizontal pixels')
+plt.subplot(222)
+plt.plot(hist1, color = colors[0])
+plt.title('Histograma Hue')
+plt.ylabel('Number of pixels')
+plt.xlabel('Intensity')
+plt.subplot(223)
+plt.plot(hist2, color = colors[1])
+plt.title('Histograma Saturation')
+plt.ylabel('Number of pixels')
+plt.xlabel('Intensity')
+plt.subplot(224)
+plt.plot(hist3, color = colors[2])
+plt.title('Histograma Value')
+plt.ylabel('Number of pixels')
+plt.xlabel('Intensity')
+plt.suptitle('Imagen procesada en el espacio HSV', fontsize=16)
 
 image_final = cv2.cvtColor(image_proc2, cv2.COLOR_HSV2BGR)
-cv2.imshow('Imagen Final',image_final)
-cv2.waitKey(0)
+
+hist1 = cv2.calcHist([image_final],[0],None,[256],[0,256])
+hist2 = cv2.calcHist([image_final],[1],None,[256],[0,256])
+hist3 = cv2.calcHist([image_final],[2],None,[256],[0,256])
+
+plt.figure()
+plt.subplot(221)
+plt.imshow(image_final)
+plt.title('Imagen Final en RGB')
+plt.ylabel('Vertical pixels')
+plt.xlabel('Horizontal pixels')
+plt.subplot(222)
+plt.plot(hist1, color = colors[0])
+plt.title('Histograma Azul')
+plt.ylabel('Number of pixels')
+plt.xlabel('Intensity')
+plt.subplot(223)
+plt.plot(hist2, color = colors[1])
+plt.title('Histograma Verde')
+plt.ylabel('Number of pixels')
+plt.xlabel('Intensity')
+plt.subplot(224)
+plt.plot(hist3, color = colors[2])
+plt.title('Histograma Rojo')
+plt.ylabel('Number of pixels')
+plt.xlabel('Intensity')
+plt.suptitle('Imagen Final del Proceso 1', fontsize=16)
+
+plt.show()

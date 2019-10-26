@@ -266,6 +266,7 @@ plt.xlabel('Intensity')
 plt.suptitle('Imagen procesada en el espacio HSV', fontsize=16)
 
 image_final = cv2.cvtColor(image_proc2, cv2.COLOR_HSV2BGR)
+cv2.imwrite('images/proceso1.jpg', image_final)
 
 hist1 = cv2.calcHist([image_final],[0],None,[256],[0,256])
 hist2 = cv2.calcHist([image_final],[1],None,[256],[0,256])

@@ -133,6 +133,7 @@ g = np.array(g,dtype = np.uint8)
 r = np.array(r,dtype = np.uint8)
 
 image_final = cv2.merge((b,g,r))
+cv2.imwrite('images/proceso2.jpg', image_final)
 
 hist1 = cv2.calcHist([image_final],[0],None,[256],[0,256])
 hist2 = cv2.calcHist([image_final],[1],None,[256],[0,256])

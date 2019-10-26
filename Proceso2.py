@@ -17,8 +17,10 @@ fig_size = plt.rcParams["figure.figsize"]
 fig_size[0] = 12
 fig_size[1] = 9
 
+srcRgb = cv2.cvtColor(src, cv2.COLOR_BGR2RGB)
+
 plt.subplot(221)
-plt.imshow(src)
+plt.imshow(srcRgb)
 plt.title('Imagen Original')
 plt.ylabel('Vertical pixels')
 plt.xlabel('Horizontal pixels')
@@ -139,9 +141,11 @@ hist1 = cv2.calcHist([image_final],[0],None,[256],[0,256])
 hist2 = cv2.calcHist([image_final],[1],None,[256],[0,256])
 hist3 = cv2.calcHist([image_final],[2],None,[256],[0,256])
 
+image_finalRgb = cv2.cvtColor(image_final, cv2.COLOR_BGR2RGB)
+
 plt.figure()
 plt.subplot(221)
-plt.imshow(image_final)
+plt.imshow(image_finalRgb)
 plt.title('Imagen Original')
 plt.ylabel('Vertical pixels')
 plt.xlabel('Horizontal pixels')

@@ -155,9 +155,11 @@ hist1 = cv2.calcHist([image_hsv],[0],None,[256],[0,256])
 hist2 = cv2.calcHist([image_hsv],[1],None,[256],[0,256])
 hist3 = cv2.calcHist([image_hsv],[2],None,[256],[0,256])
 
+image_hsv_RGB = cv2.cvtColor(image_hsv, cv2.COLOR_BGR2RGB)
+
 plt.figure()
 plt.subplot(221)
-plt.imshow(image_hsv)
+plt.imshow(image_hsv_RGB)
 plt.title('Imagen Inicial en HSV')
 plt.ylabel('Vertical pixels')
 plt.xlabel('Horizontal pixels')
